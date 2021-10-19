@@ -21,7 +21,7 @@ HORCE_PATH = config_ini.get('DEFAULT', 'HORCE_PATH')
 
 # 馬名を取得し、馬ごとにcsvを作成する。
 # その際、レースデータも取得する
-for where in range(5, 11):
+for where in range(1, 11):
     # maxのmanyを取得する
     max_many = search_number_of_times_held(BASE_URL, year, where)
     for many in range(1, max_many):
