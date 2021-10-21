@@ -297,8 +297,6 @@ def get_race_info(url, where):
     mixture = get_race_stag_or_mare(soup)
     # レースクラス
     race_class = get_race_class(soup)
-    
-    # print('条件:', condition, '月:', month, '日:', day,
-    #       '場所:', kaisai, '世代限定戦:', generation,
-    #       '牡馬牝馬:', mixture, 'レースクラス:', race_class)
+    return condition, month, day, kaisai, generation, mixture, race_class
+
 
