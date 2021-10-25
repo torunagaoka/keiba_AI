@@ -2,7 +2,6 @@ import re
 
 from utils.beautiful_util import init_beautifulsoup
 from utils.char_util import str_format
-from utils.dic import get_kaisai
 
 
 def search_number_of_times_held(url_org, year, where):
@@ -131,7 +130,8 @@ def get_condition(soup):
         turf = 1
     elif('芝' in condition):
         turf = 0
-    return turf
+    distance = condition[2:]
+    return turf, distance
 
 
 def get_month_day(soup):
@@ -282,21 +282,19 @@ def get_race_stag_or_mare(soup):
     return whether
 
 
-def get_race_info(url, where):
-    # beautifulsoupの初期化
-    soup = init_beautifulsoup(url)
-    # 条件を取得
-    condition = get_condition(soup)
-    # 月・日を取得
-    month, day = get_month_day(soup)
-    # 開催場所を取得
-    kaisai = get_kaisai(where)
-    # 世代限定戦かどうか
-    generation = get_race_generation(soup)
-    # 牡馬・牝馬混合戦かどうか
-    mixture = get_race_stag_or_mare(soup)
-    # レースクラス
-    race_class = get_race_class(soup)
-    return condition, month, day, kaisai, generation, mixture, race_class
+# def get_race_info(soup, where):
+#     # 条件を取得
+#     condition = get_condition(soup)
+#     # 月・日を取得
+#     month, day = get_month_day(soup)
+#     # 開催場所を取得
+#     kaisai = get_kaisai(where)
+#     # 世代限定戦かどうか
+#     generation = get_race_generation(soup)
+#     # 牡馬・牝馬混合戦かどうか
+#     mixture = get_race_stag_or_mare(soup)
+#     # レースクラス
+#     race_class = get_race_class(soup)
+#     return condition, month, day, kaisai, generation, mixture, race_class
 
 

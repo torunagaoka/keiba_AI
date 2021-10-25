@@ -4,10 +4,10 @@ import datetime
 from keiba_common.search import search_number_of_times_held
 from keiba_common.search import search_number_of_days
 from keiba_common.search import search_number_of_race
-from keiba_common.search import get_race_info
-# from keiba_common.csv import make_race_csv
-
+from keiba_common.csv import make_race_csv
 from utils.url import create_url
+from index.ground_index import ground_index_add
+from index.speed_index import make_speed_index
 
 # configparserの宣言とiniファイルの読み込み
 config_ini = configparser.ConfigParser()
@@ -33,5 +33,11 @@ for where in range(1, 11):
                 print(datetime.datetime.now())
                 print(url)
                 # レースのcsvを作成する
-                get_race_info(url, where)
+                make_race_csv(url, RACE_PATH, year, where, race)
+            # 馬場指数を作成する
+            ground_index_add(0)
+            ground_index_add(1)
+            # スピード指数を作成する
+            make_speed_index(0, RACE_PATH)
+            make_speed_index(1, RACE_PATH)
 

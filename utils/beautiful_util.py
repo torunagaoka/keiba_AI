@@ -43,7 +43,7 @@ def get_resultTableWrap(soup):
     return result_table_wrap
 
 
-def get_horse_info(soup):
+def get_horse_info(soup, count_true):
     """
     馬名と馬齢をリストで取得する
 
@@ -51,13 +51,19 @@ def get_horse_info(soup):
     ----------
     soup : soup
         soup
+    count_true：boolean
+        頭数を返す場合はtrue
 
     Returns
     -------
-    horse_list : list
-        馬名のリスト
-    horse_age : list
-        馬齢のリスト
+    count_true ⇨ true
+        list_len : int
+            頭数
+    count_true ⇨ false
+        horse_list : list
+            馬名のリスト
+        horse_age : list
+            馬齢のリスト
     """
     horse_list = []
     horse_age = []
@@ -69,7 +75,68 @@ def get_horse_info(soup):
         else:
             horse_list.append(normalization(horce_info[i].text)[1])
     list_len = len(horse_list) - exclusion
-    return horse_list[:list_len], horse_age[:list_len]
+    if (count_true):
+        return list_len
+    else:
+        return horse_list[:list_len], horse_age[:list_len]
+
+
+def get_time(soup):
+    """
+    レース結果のtimeを取得する
+
+    Parameters
+    ----------
+    soup : soup
+        soup
+
+    Returns
+    -------
+    times : list
+        走破タイム
+    last3fs : list
+        上がり3Fのタイム
+    """
+    time_th = soup.find_all(class_="Time")
+    horse_num = get_horse_info(soup, True)
+    # 走破タイムを取得
+    times = []
+    for i in range(1, horse_num*3, 3):
+        time = time_th[i].text.splitlines()[1]
+        times.append(time)
+    # 上がり3Fを取得
+    last3fs = []
+    for j in range(3, horse_num*3+1, 3):
+        last3f = time_th[j].text.splitlines()[1]
+        last3fs.append(last3f)
+    return times, last3fs
+
+
+def get_popular_odds(soup):
+    """
+    レースのtimeを取得する
+
+    Parameters
+    ----------
+    soup : soup
+        soup
+
+    Returns
+    -------
+    popular_list : list
+        人気のリスト
+    odds_list : list
+        オッズのリスト
+    """
+    odds_th = soup.find_all(class_="Odds")
+    horse_num = get_horse_info(soup, True)
+    odds_list = []
+    popular_list = []
+    for i in range(1, horse_num*2, 2):
+        popular_list.append(odds_th[i].text.splitlines()[1])
+    for j in range(2, horse_num*2+1, 2):
+        odds_list.append(odds_th[j].text.splitlines()[1])
+    return popular_list, odds_list
 
 
 def count_exclusion(soup):
@@ -95,4 +162,12 @@ def count_exclusion(soup):
                 count += 1
     return count
 
+
+def get_jockey_weight(soup):
+    weight_info = soup.select('.JockeyWeight')
+    horse_num = get_horse_info(soup, True)
+    weight_list = []
+    for i in range(horse_num):
+        weight_list.append(weight_info[i].text)
+    return weight_list
 
