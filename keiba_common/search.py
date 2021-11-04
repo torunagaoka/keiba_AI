@@ -2,6 +2,7 @@ import re
 
 from utils.beautiful_util import init_beautifulsoup
 from utils.char_util import str_format
+from utils.tools import normalization
 
 
 def search_number_of_times_held(url_org, year, where):
@@ -282,19 +283,16 @@ def get_race_stag_or_mare(soup):
     return whether
 
 
-# def get_race_info(soup, where):
-#     # 条件を取得
-#     condition = get_condition(soup)
-#     # 月・日を取得
-#     month, day = get_month_day(soup)
-#     # 開催場所を取得
-#     kaisai = get_kaisai(where)
-#     # 世代限定戦かどうか
-#     generation = get_race_generation(soup)
-#     # 牡馬・牝馬混合戦かどうか
-#     mixture = get_race_stag_or_mare(soup)
-#     # レースクラス
-#     race_class = get_race_class(soup)
-#     return condition, month, day, kaisai, generation, mixture, race_class
-
+def get_father(soup):
+    """
+    父、母父を取得する
+    """
+    father_list = []
+    father = soup.find_all(class_='b_ml')[0].text
+    mother_father = soup.find_all(class_='b_ml')[2].text
+    father = normalization(father)[1]
+    mother_father = normalization(mother_father)[1]
+    father_list.append(father)
+    father_list.append(mother_father)
+    return father_list
 

@@ -36,3 +36,22 @@ def time_avg(time_list):
         avg = sum(time_list) / len(time_list)
         return avg
 
+
+def normalization(text):
+    """
+    正規化処理
+    半角文字と、改行を処理する
+
+    Parameters
+    ----------
+    text : str
+        テキスト
+
+    Returns
+    -------
+    norm_text : str
+        正規化したテキスト
+    """
+    norm_text = text.replace(' ', '').split('\n')
+    return norm_text
+

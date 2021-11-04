@@ -164,10 +164,48 @@ def count_exclusion(soup):
 
 
 def get_jockey_weight(soup):
+    """
+    斤量のリストを取得する
+
+    Parameters
+    ----------
+    soup : soup
+        soup
+
+    Returns
+    -------
+    weight_list : list
+        斤量リスト
+    """
     weight_info = soup.select('.JockeyWeight')
     horse_num = get_horse_info(soup, True)
     weight_list = []
     for i in range(horse_num):
         weight_list.append(weight_info[i].text)
     return weight_list
+
+
+def get_tbody(soup, corresponding_day):
+    """
+    戦績があるtbodyを取得する
+
+    Parameters
+    ----------
+    soup : soup
+        soup
+    corresponding_day : str
+        対象日時
+
+    Returns
+    -------
+    tbody : tbody
+        対象日時が記載してあるtbody
+    """
+    if (corresponding_day in soup.find_all('tbody')[0].text):
+        tbody = soup.find_all('tbody')[0]
+    elif(corresponding_day in soup.find_all('tbody')[1].text):
+        tbody = soup.find_all('tbody')[1]
+    elif(corresponding_day in soup.find_all('tbody')[2].text):
+        tbody = soup.find_all('tbody')[2]
+    return tbody
 
